@@ -15,6 +15,10 @@ use App\Task;
 use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['web']], function () {
+    Route::get("/welcome", function(){
+        return view("welcome");
+    });
+
     /**
      * Show Task Dashboard
      */
@@ -29,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
      */
     Route::post('/task', function (Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255',
+            'name' => 'required|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -40,6 +44,7 @@ Route::group(['middleware' => ['web']], function () {
 
         $task = new Task;
         $task->name = $request->name;
+        $task->duration = $request->duration;
         $task->save();
 
         return redirect('/');
